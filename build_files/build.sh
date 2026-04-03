@@ -44,18 +44,8 @@ cat > /usr/lib/tmpfiles.d/1password.conf << 'EOF'
 L /var/opt/1Password - - - - /usr/lib/1Password
 EOF
 
-# Install the native messaging host manifest for Firefox
-# (the 1Password RPM doesn't put this in the standard Mozilla path)
-mkdir -p /usr/lib/mozilla/native-messaging-hosts
-cat > /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json << 'EOF'
-{
-  "name": "com.1password.1password",
-  "description": "1Password desktop integration",
-  "path": "/usr/lib/1Password/1Password-BrowserSupport",
-  "type": "stdio",
-  "allowed_extensions": ["support@1password.com"]
-}
-EOF
+# Run 1Password's own post-install script to set up manifests, polkit, etc.
+/usr/lib/1Password/after-install.sh
 
 # Fix GIDs
 mkdir -p /usr/lib/sysusers.d
