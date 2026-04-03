@@ -39,6 +39,12 @@ dnf5 install -y 1password 1password-cli
 # (the package is already installed; the repo isn't needed at runtime)
 rm /etc/yum.repos.d/1password.repo
 
+# Debug: find where 1Password put its manifest files
+find /usr/lib/1Password -name "*.json" 2>/dev/null || true
+find /var/opt/1Password -name "*.json" 2>/dev/null || true
+find /usr/lib/mozilla -name "*1password*" 2>/dev/null || true
+find /etc -name "*1password*" 2>/dev/null || true
+
 # Move 1Password's files into /usr which is immutable and persists across boots
 # Then symlink /usr/lib/1Password back to where the app expects itself to be
 mv /var/opt/1Password /usr/lib/1Password
