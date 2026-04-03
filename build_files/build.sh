@@ -53,12 +53,10 @@ EOF
 # Re-chown the setgid helper binaries to the reserved GIDs
 # so they match what sysusers.d will create at runtime
 chgrp 1500 /opt/1Password/1Password-BrowserSupport
-chgrp 1500 /opt/1Password/1Password-KeyringHelper
 chgrp 1600 /usr/bin/op
 
 # Ensure the setgid bit is set on the helpers
 chmod g+s /opt/1Password/1Password-BrowserSupport
-chmod g+s /opt/1Password/1Password-KeyringHelper
 chmod g+s /usr/bin/op
 
 # Use a COPR Example:
