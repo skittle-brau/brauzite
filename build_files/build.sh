@@ -37,6 +37,9 @@ rm /etc/yum.repos.d/1password.repo
 # Move 1Password's files into /usr which is immutable and persists across boots
 mv /var/opt/1Password /usr/lib/1Password
 
+# Create the symlink BEFORE running after-install.sh so it can find its files
+ln -s /usr/lib/1Password /opt/1Password
+
 # Tell systemd to recreate the /var/opt/1Password symlink on every boot
 # (bootc lint requires this instead of leaving real content in /var)
 mkdir -p /usr/lib/tmpfiles.d
