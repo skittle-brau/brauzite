@@ -10,7 +10,10 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # this installs a package from fedora repos
-dnf5 install -y tmux 
+dnf5 install -y tmux korganizer merkuro firefox
+
+# Install 1Password using ublue's recommended installer path
+curl -fsSL https://raw.githubusercontent.com/ublue-os/bling/main/scripts/1password.sh | bash
 
 # Use a COPR Example:
 #
