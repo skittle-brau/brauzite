@@ -14,14 +14,12 @@ dnf5 install -y tmux korganizer merkuro firefox
 
 ### Install 1Password
 
-# Pre-create the directory the RPM expects to exist
-# (the RPM's scriptlet fails to mkdir it in the OSTree build environment)
+# Pre-create the install directory (/opt is a symlink to /var/opt in OSTree)
 mkdir -p /var/opt/1Password
 
-# Add the 1Password GPG key
+# Add GPG key and repo
 rpm --import https://downloads.1password.com/linux/keys/1password.asc
 
-# Add the 1Password repo
 cat > /etc/yum.repos.d/1password.repo << 'EOF'
 [1password]
 name=1Password Stable Channel
@@ -32,23 +30,32 @@ repo_gpgcheck=1
 gpgkey=https://downloads.1password.com/linux/keys/1password.asc
 EOF
 
-# Install 1Password and the CLI
 dnf5 install -y 1password 1password-cli
 
-# Clean up the repo file so it doesn't persist on the final image
-# (the package is already installed; the repo isn't needed at runtime)
 rm /etc/yum.repos.d/1password.repo
 
-# Debug: find where 1Password put its manifest files
-find /usr/lib/1Password -name "*.json" 2>/dev/null || true
-find /var/opt/1Password -name "*.json" 2>/dev/null || true
-find /usr/lib/mozilla -name "*1password*" 2>/dev/null || true
-find /etc -name "*1password*" 2>/dev/null || true
-
 # Move 1Password's files into /usr which is immutable and persists across boots
-# Then symlink /usr/lib/1Password back to where the app expects itself to be
 mv /var/opt/1Password /usr/lib/1Password
-ln -s /usr/lib/1Password /opt/1Password
+
+# Tell systemd to recreate the /var/opt/1Password symlink on every boot
+# (bootc lint requires this instead of leaving real content in /var)
+mkdir -p /usr/lib/tmpfiles.d
+cat > /usr/lib/tmpfiles.d/1password.conf << 'EOF'
+L /var/opt/1Password - - - - /usr/lib/1Password
+EOF
+
+# Install the native messaging host manifest for Firefox
+# (the 1Password RPM doesn't put this in the standard Mozilla path)
+mkdir -p /usr/lib/mozilla/native-messaging-hosts
+cat > /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json << 'EOF'
+{
+  "name": "com.1password.1password",
+  "description": "1Password desktop integration",
+  "path": "/usr/lib/1Password/1Password-BrowserSupport",
+  "type": "stdio",
+  "allowed_extensions": ["support@1password.com"]
+}
+EOF
 
 # Fix GIDs
 mkdir -p /usr/lib/sysusers.d
@@ -61,6 +68,9 @@ find /usr/lib/1Password -type f -perm /g+s -exec chgrp 1500 {} \;
 find /usr/lib/1Password -type f -perm /g+s -exec chmod g+s {} \;
 chgrp 1600 /usr/bin/op
 chmod g+s /usr/bin/op
+
+# Clean up dnf cache left in /var to satisfy bootc lint
+rm -rf /var/lib/dnf
 
 # Use a COPR Example:
 #
