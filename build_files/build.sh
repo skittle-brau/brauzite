@@ -9,16 +9,8 @@ set -ouex pipefail
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# this installs a package from fedora repos
-dnf5 install -y tmux korganizer merkuro firefox
-
-bash
-
-#!/bin/bash
-set -ouex pipefail
-
-### Install packages
-dnf5 install -y tmux korganizer merkuro firefox
+# Install packages from Fedora repo
+dnf5 install -y tmux firefox akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
 
 ### Install 1Password
 
