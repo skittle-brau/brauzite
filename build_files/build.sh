@@ -68,7 +68,6 @@ chmod 4755 /usr/lib/1Password/chrome-sandbox
 ln -sf /usr/lib/1Password/1password /usr/bin/1password
 
 # Write the native messaging host manifest to the system-wide Mozilla paths
-# 1Password normally writes this at runtime but we need it baked into the image
 mkdir -p /usr/lib/mozilla/native-messaging-hosts
 cat > /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json << 'EOF'
 {
@@ -84,20 +83,20 @@ cat > /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json << 'E
 }
 EOF
 
-# Also write to /usr/lib64 path as Firefox may check either location
 mkdir -p /usr/lib64/mozilla/native-messaging-hosts
 cp /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json \
    /usr/lib64/mozilla/native-messaging-hosts/com.1password.1password.json
 
-# Fix GIDs
+# Fix GIDs and permissions explicitly by name
+# The RPM does not pre-set the setgid bit so find -perm /g+s finds nothing
 mkdir -p /usr/lib/sysusers.d
 cat > /usr/lib/sysusers.d/onepassword.conf << 'EOF'
 g onepassword     1500
 g onepassword-cli 1600
 EOF
 
-find /usr/lib/1Password -type f -perm /g+s -exec chgrp 1500 {} \;
-find /usr/lib/1Password -type f -perm /g+s -exec chmod g+s {} \;
+chgrp 1500 /usr/lib/1Password/1Password-BrowserSupport
+chmod g+s /usr/lib/1Password/1Password-BrowserSupport
 chgrp 1600 /usr/bin/op
 chmod g+s /usr/bin/op
 
