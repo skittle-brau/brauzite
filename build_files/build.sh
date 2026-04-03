@@ -14,6 +14,10 @@ dnf5 install -y tmux korganizer merkuro firefox
 
 ### Install 1Password
 
+# Pre-create the directory the RPM expects to exist
+# (the RPM's scriptlet fails to mkdir it in the OSTree build environment)
+mkdir -p /opt/1Password
+
 # Add the 1Password GPG key
 rpm --import https://downloads.1password.com/linux/keys/1password.asc
 
