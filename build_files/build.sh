@@ -39,24 +39,21 @@ dnf5 install -y 1password 1password-cli
 # (the package is already installed; the repo isn't needed at runtime)
 rm /etc/yum.repos.d/1password.repo
 
-# Fix UID/GID drift - reserve fixed GIDs for 1Password's privileged helpers
-# The RPM assigns GIDs dynamically; we need them pinned so sysusers.d
-# creates the groups with the correct numbers on every boot/deploy.
+# Move 1Password's files into /usr which is immutable and persists across boots
+# Then symlink /usr/lib/1Password back to where the app expects itself to be
+mv /var/opt/1Password /usr/lib/1Password
+ln -s /usr/lib/1Password /opt/1Password
 
-# Declare the groups with fixed GIDs via sysusers.d
+# Fix GIDs
 mkdir -p /usr/lib/sysusers.d
 cat > /usr/lib/sysusers.d/onepassword.conf << 'EOF'
 g onepassword     1500
 g onepassword-cli 1600
 EOF
 
-# Re-chown the setgid helper binaries to the reserved GIDs
-# so they match what sysusers.d will create at runtime
-chgrp 1500 /opt/1Password/1Password-BrowserSupport
+find /usr/lib/1Password -type f -perm /g+s -exec chgrp 1500 {} \;
+find /usr/lib/1Password -type f -perm /g+s -exec chmod g+s {} \;
 chgrp 1600 /usr/bin/op
-
-# Ensure the setgid bit is set on the helpers
-chmod g+s /opt/1Password/1Password-BrowserSupport
 chmod g+s /usr/bin/op
 
 # Use a COPR Example:
