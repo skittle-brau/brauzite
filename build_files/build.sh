@@ -9,8 +9,8 @@ set -ouex pipefail
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# Install packages from Fedora repo
-dnf5 install -y tmux firefox akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro syncthing
+# Install packages from Fedora repo (merkuro/akonadi for calendaring, kmarkdownwebview for previews in Kate)
+dnf5 install -y tmux firefox akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro syncthing kmarkdownwebview
 
 ### Install 1Password
 
