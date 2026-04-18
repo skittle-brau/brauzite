@@ -10,7 +10,7 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Install packages from Fedora repo (merkuro/akonadi for calendaring, markdownpart for previews in Kate)
-dnf5 install -y tmux firefox akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro syncthing markdownpart
+dnf5 install -y tmux firefox akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro markdownpart
 
 ### Install 1Password
 
