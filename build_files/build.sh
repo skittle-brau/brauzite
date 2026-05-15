@@ -10,15 +10,7 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Install extra packages from Fedora repo
-dnf5 install -y tmux firefox
-
-### Install Vivaldi browser
-
-# Add Vivaldi repo
-wget -O /etc/yum.repos.d/vivaldi-fedora.repo https://repo.vivaldi.com/archive/vivaldi-fedora.repo
-
-# Install Vivaldi
-dnf5 install -y vivaldi-stable
+dnf5 install -y tmux firefox chromium
 
 ### Install 1Password
 
