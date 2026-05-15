@@ -9,8 +9,16 @@ set -ouex pipefail
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# Install packages from Fedora repo (merkuro/akonadi for calendaring, markdownpart for previews in Kate)
-dnf5 install -y tmux firefox akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro markdownpart
+# Install extra packages from Fedora repo
+dnf5 install -y tmux firefox
+
+### Install Vivaldi browser
+
+# Add Vivaldi repo
+wget -O /etc/yum.repos.d/vivaldi-fedora.repo https://repo.vivaldi.com/archive/vivaldi-fedora.repo
+
+# Install Vivaldi
+dnf5 install -y vivaldi-stable
 
 ### Install 1Password
 
