@@ -14,9 +14,6 @@ dnf5 install -y tmux firefox chromium
 
 ### Install 1Password
 
-# Pre-create the install directory (/opt is a symlink to /var/opt in OSTree)
-mkdir -p /var/opt/1Password
-
 # Add GPG key and repo
 rpm --import https://downloads.1password.com/linux/keys/1password.asc
 
@@ -36,9 +33,10 @@ rm /etc/yum.repos.d/1password.repo
 
 # Move 1Password's files into /usr which is immutable and persists across boots
 mv /var/opt/1Password /usr/lib/1Password
-ln -s /usr/lib/1Password /opt/1Password
+rm -f /opt/1Password
+ln -sfn /usr/lib/1Password /opt/1Password
 
-# Tell systemd to recreate the /var/opt/1Password symlink on every boot
+# Tell systemd-tmpfiles to recreate the /var/opt/1Password symlink on every boot
 mkdir -p /usr/lib/tmpfiles.d
 cat > /usr/lib/tmpfiles.d/1password.conf << 'EOF'
 L /var/opt/1Password - - - - /usr/lib/1Password
@@ -50,14 +48,23 @@ eval "cat <<EOF
 $(cat /usr/lib/1Password/com.1password.1Password.policy.tpl)
 EOF" > /usr/share/polkit-1/actions/com.1password.1Password.policy
 
-# Install custom allowed browsers config
-install -Dm0644 /usr/lib/1Password/resources/custom_allowed_browsers -t /etc/1password/
+# Install custom allowed browsers config and add Vivaldi
+install -d /etc/1password
+install -m 0644 /usr/lib/1Password/resources/custom_allowed_browsers /etc/1password/custom_allowed_browsers
+grep -qxF 'vivaldi-bin' /etc/1password/custom_allowed_browsers || echo 'vivaldi-bin' >> /etc/1password/custom_allowed_browsers
+chown root:root /etc/1password/custom_allowed_browsers
+chmod 755 /etc/1password/custom_allowed_browsers
 
 # Set chrome-sandbox setuid bit
 chmod 4755 /usr/lib/1Password/chrome-sandbox
 
 # Create /usr/bin/1password symlink
 ln -sf /usr/lib/1Password/1password /usr/bin/1password
+
+# Install desktop entry system-wide for GNOME/KDE menus
+install -Dm0644 /usr/lib/1Password/resources/1password.desktop /usr/share/applications/1password.desktop
+sed -i 's|^Exec=.*|Exec=/usr/lib/1Password/1password %U|' /usr/share/applications/1password.desktop
+sed -i 's|^Icon=.*|Icon=/usr/lib/1Password/resources/icons/hicolor/256x256/apps/1password.png|' /usr/share/applications/1password.desktop
 
 # Write the native messaging host manifest to the system-wide Mozilla paths
 mkdir -p /usr/lib/mozilla/native-messaging-hosts
