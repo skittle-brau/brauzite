@@ -14,6 +14,9 @@ dnf5 install -y tmux firefox chromium
 
 ### Install 1Password
 
+# Pre-create the install directory (/opt is effectively backed by /var/opt on OSTree-style systems)
+mkdir -p /var/opt/1Password
+
 # Add GPG key and repo
 rpm --import https://downloads.1password.com/linux/keys/1password.asc
 
@@ -36,7 +39,7 @@ mv /var/opt/1Password /usr/lib/1Password
 rm -f /opt/1Password
 ln -sfn /usr/lib/1Password /opt/1Password
 
-# Tell systemd-tmpfiles to recreate the /var/opt/1Password symlink on every boot
+# Tell systemd to recreate the /var/opt/1Password symlink on every boot
 mkdir -p /usr/lib/tmpfiles.d
 cat > /usr/lib/tmpfiles.d/1password.conf << 'EOF'
 L /var/opt/1Password - - - - /usr/lib/1Password
@@ -101,13 +104,6 @@ chmod g+s /usr/bin/op
 
 # Clean up dnf cache left in /var to satisfy bootc lint
 rm -rf /var/lib/dnf
-
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
 
 #### Example for enabling a System Unit File
 
