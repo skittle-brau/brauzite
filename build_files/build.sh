@@ -10,7 +10,7 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Install extra packages from Fedora repo
-dnf5 install -y tmux firefox chromium akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
+dnf5 install -y tmux firefox chromium akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro qemu-kvm libvirt virt-manager virt-install virt-viewer qemu-img guestfs-tools qemu-guest-agent
 
 ### Install 1Password
 
@@ -108,3 +108,4 @@ rm -rf /var/lib/dnf
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
+systemctl enable libvirtd.service
