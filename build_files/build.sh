@@ -10,7 +10,14 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Install extra packages from Fedora repo
-dnf5 install -y tmux firefox chromium akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro qemu-kvm libvirt virt-manager virt-install virt-viewer qemu-img guestfs-tools qemu-guest-agent
+# I install the native versions of Firefox and Chromium in order to maintain the browser sandbox (better than flatpak) and to integrate with 1Password more easily
+dnf5 install -y firefox chromium 
+
+# If using KDE Plasma, I like to install these:
+# akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
+
+# If using bazzite (not dx), install these to restore kvm/qemu packages.
+# qemu-kvm libvirt virt-manager virt-install virt-viewer qemu-img guestfs-tools qemu-guest-agent
 
 ### Install 1Password
 
