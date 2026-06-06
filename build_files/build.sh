@@ -11,13 +11,16 @@ set -ouex pipefail
 
 # Install extra packages from Fedora repo
 # I install the native versions of Firefox and Chromium in order to maintain the browser sandbox (better than flatpak) and to integrate with 1Password more easily
-dnf5 install -y firefox chromium 
+dnf5 install -y firefox chromium
 
 # If using KDE Plasma, I like to install merkuro which requires these dependencies and also enables the clock/calendar widget:
-# dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
+dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
 
 # If using bazzite (not dx), install these to restore kvm/qemu packages.
 dnf5 install -y qemu-kvm libvirt virt-manager virt-install virt-viewer qemu-img guestfs-tools qemu-guest-agent
+
+# If you want ROCm and HIP
+dnf5 install -y rocm-hip rocm-opencl rocm-clinfo
 
 ### Install 1Password
 
