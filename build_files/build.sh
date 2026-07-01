@@ -11,8 +11,7 @@ set -ouex pipefail
 
 # Install extra packages from Fedora repo
 # I install the native versions of Firefox in order to maintain the browser sandbox (better than flatpak) and to integrate with 1Password more easily
-dnf5 config-manager setopt fedora-cisco-openh264.enabled=1
-dnf5 install -y firefox
+dnf5 install -y --setopt=install_weak_deps=False firefox
 
 # If using KDE Plasma, I like to install merkuro which requires these dependencies and also enables the clock/calendar widget:
 #dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
