@@ -10,8 +10,7 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Install extra packages from Fedora repo
-# I install the native versions of Firefox in order to maintain the browser sandbox (better than flatpak) and to integrate with 1Password more easily
-dnf5 install -y --setopt=install_weak_deps=False firefox
+#dnf5 install -y firefox
 
 # If using KDE Plasma, I like to install merkuro which requires these dependencies and also enables the clock/calendar widget:
 #dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
