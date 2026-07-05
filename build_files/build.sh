@@ -10,6 +10,9 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Install extra packages from Fedora repo
+
+# Install mozilla-openh264 first to satisfy Firefox's dependency
+dnf5 install -y mozilla-openh264
 dnf5 install -y firefox
 
 # If using KDE Plasma, I like to install merkuro which requires these dependencies and also enables the clock/calendar widget:
