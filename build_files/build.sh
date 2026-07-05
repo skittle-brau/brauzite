@@ -12,8 +12,7 @@ set -ouex pipefail
 # Install extra packages from Fedora repo
 
 # Install mozilla-openh264 first to satisfy Firefox's dependency
-dnf5 install -y mozilla-openh264
-dnf5 install -y firefox
+dnf5 install -y --allowerasing firefox
 
 # If using KDE Plasma, I like to install merkuro which requires these dependencies and also enables the clock/calendar widget:
 #dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
