@@ -41,6 +41,11 @@ repo_gpgcheck=1
 gpgkey=https://downloads.1password.com/linux/keys/1password.asc
 EOF
 
+# Work around 1Password's %post scriptlet doing `mkdir /usr/local`,
+# which fails on OSTree images because /usr/local is already a symlink.
+mkdir -p /var/usrlocal
+ln -sf ../var/usrlocal /usr/local
+
 dnf5 install -y 1password 1password-cli
 
 rm /etc/yum.repos.d/1password.repo
