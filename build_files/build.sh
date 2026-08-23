@@ -23,6 +23,14 @@ dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime 
 # If you want ROCm and HIP on bazzite
 #dnf5 install -y rocm-hip rocm-opencl rocm-clinfo
 
+### Install Klassy
+
+RUN source /etc/os-release && \
+    curl -Lo /etc/yum.repos.d/home_paulmcauley.repo \
+      "https://download.opensuse.org/repositories/home:paulmcauley/Fedora_${VERSION_ID}/home:paulmcauley.repo" && \
+    dnf5 install -y klassy && \
+    rm /etc/yum.repos.d/home_paulmcauley.repo
+
 ### Install 1Password
 
 # Pre-create the install directory (/opt is effectively backed by /var/opt on OSTree-style systems)
