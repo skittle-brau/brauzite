@@ -11,11 +11,11 @@ set -ouex pipefail
 
 # Install extra packages from Fedora repo
 
-# Install mozilla-openh264 first to satisfy Firefox's dependency
+# Install native Firefox for easy integration with 1Password
 dnf5 install -y --allowerasing firefox
 
 # If using KDE Plasma, I like to install merkuro which requires these dependencies and also enables the clock/calendar widget:
-dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
+# dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime kimap kldap korganizer qt6-qtlocation merkuro
 
 # If using bazzite (not dx), install these to restore kvm/qemu packages.
 #dnf5 install -y qemu-kvm libvirt virt-manager virt-install virt-viewer qemu-img guestfs-tools qemu-guest-agent
@@ -25,11 +25,11 @@ dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime 
 
 ### Install Klassy
 
-RUN source /etc/os-release && \
-    curl -Lo /etc/yum.repos.d/home_paulmcauley.repo \
-      "https://download.opensuse.org/repositories/home:paulmcauley/Fedora_${VERSION_ID}/home:paulmcauley.repo" && \
-    dnf5 install -y klassy && \
-    rm /etc/yum.repos.d/home_paulmcauley.repo
+#RUN source /etc/os-release && \
+#    curl -Lo /etc/yum.repos.d/home_paulmcauley.repo \
+#      "https://download.opensuse.org/repositories/home:paulmcauley/Fedora_${VERSION_ID}/home:paulmcauley.repo" && \
+#    dnf5 install -y klassy && \
+#    rm /etc/yum.repos.d/home_paulmcauley.repo
 
 ### Install 1Password
 
