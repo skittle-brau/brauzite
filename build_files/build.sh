@@ -75,13 +75,6 @@ eval "cat <<EOF
 $(cat /usr/lib/1Password/com.1password.1Password.policy.tpl)
 EOF" > /usr/share/polkit-1/actions/com.1password.1Password.policy
 
-# Log build errors
-echo "=== 1password package file list ==="
-rpm -ql 1password | grep -i desktop || echo "no desktop file in rpm manifest"
-echo "=== searching filesystem ==="
-find /usr/lib/1Password -iname '*.desktop' 2>/dev/null
-find / -xdev -iname '1password.desktop' 2>/dev/null
-
 # Install custom allowed browsers config and add Vivaldi
 install -d /etc/1password
 install -m 0644 /usr/lib/1Password/resources/custom_allowed_browsers /etc/1password/custom_allowed_browsers
@@ -95,10 +88,17 @@ chmod 4755 /usr/lib/1Password/chrome-sandbox
 # Create /usr/bin/1password symlink
 ln -sf /usr/lib/1Password/1password /usr/bin/1password
 
+# DEBUG
+echo "=== 1password package file list ==="
+rpm -ql 1password | grep -i desktop || echo "no desktop file in rpm manifest"
+echo "=== searching filesystem ==="
+find /usr/lib/1Password -iname '*.desktop' 2>/dev/null
+find / -xdev -iname '1password.desktop' 2>/dev/null
+
 # Install desktop entry system-wide for GNOME/KDE menus
-install -Dm0644 /usr/lib/1Password/resources/1password.desktop /usr/share/applications/1password.desktop
 sed -i 's|^Exec=.*|Exec=/usr/lib/1Password/1password %U|' /usr/share/applications/1password.desktop
 sed -i 's|^Icon=.*|Icon=/usr/lib/1Password/resources/icons/hicolor/256x256/apps/1password.png|' /usr/share/applications/1password.desktop
+grep -E '^(Exec|Icon)=' /usr/share/applications/1password.desktop
 
 # Write the native messaging host manifest to the system-wide Mozilla paths
 mkdir -p /usr/lib/mozilla/native-messaging-hosts
