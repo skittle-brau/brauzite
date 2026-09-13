@@ -75,6 +75,13 @@ eval "cat <<EOF
 $(cat /usr/lib/1Password/com.1password.1Password.policy.tpl)
 EOF" > /usr/share/polkit-1/actions/com.1password.1Password.policy
 
+# Log build errors
+echo "=== 1password package file list ==="
+rpm -ql 1password | grep -i desktop || echo "no desktop file in rpm manifest"
+echo "=== searching filesystem ==="
+find /usr/lib/1Password -iname '*.desktop' 2>/dev/null
+find / -xdev -iname '1password.desktop' 2>/dev/null
+
 # Install custom allowed browsers config and add Vivaldi
 install -d /etc/1password
 install -m 0644 /usr/lib/1Password/resources/custom_allowed_browsers /etc/1password/custom_allowed_browsers
