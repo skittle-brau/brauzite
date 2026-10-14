@@ -24,12 +24,11 @@ dnf5 install -y akonadi akonadi-calendar kcalutils kdepim-addons kdepim-runtime 
 #dnf5 install -y rocm-hip rocm-opencl rocm-clinfo
 
 ### Install Klassy
-
-RUN source /etc/os-release && \
-    curl -Lo /etc/yum.repos.d/home_paulmcauley.repo \
-      "https://download.opensuse.org/repositories/home:paulmcauley/Fedora_${VERSION_ID}/home:paulmcauley.repo" && \
-    dnf5 install -y klassy && \
-    rm /etc/yum.repos.d/home_paulmcauley.repo
+source /etc/os-release
+curl -fsSLo /etc/yum.repos.d/home_paulmcauley.repo \
+  "https://download.opensuse.org/repositories/home:paulmcauley/Fedora_${VERSION_ID}/home:paulmcauley.repo"
+dnf5 install -y klassy
+rm /etc/yum.repos.d/home_paulmcauley.repo
 
 ### Install 1Password
 
